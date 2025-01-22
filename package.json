@@ -1,0 +1,59 @@
+{
+	"author": {
+		"name": "Baptiste Pillot",
+		"email": "baptiste@pillot.fr"
+	},
+	"dependencies": {
+		"@itrocks/class-type": "latest",
+		"@itrocks/core-responses": "latest",
+		"@itrocks/decorator": "latest",
+		"@itrocks/request-response": "latest",
+		"@itrocks/storage": "latest"
+	},
+	"description": "",
+	"devDependencies": {
+		"@types/jest": "^29.5",
+		"@types/node": "^22.10",
+		"jest": "^29.7",
+		"ts-jest": "^29.2",
+		"typescript": "^5.6"
+	},
+	"engines": {
+		"node": ">=18"
+	},
+	"exports": {
+		"import": "./esm/action.js",
+		"require": "./cjs/action.js"
+	},
+	"files": [
+		"LICENSE",
+		"README.md",
+		"*/*.d.ts",
+		"*/*.js",
+		"!*/esm.*"
+	],
+	"homepage": "https://it.rocks",
+	"jest": {
+		"preset": "ts-jest",
+		"testEnvironment": "node",
+		"testMatch": ["**/?(*.)+(spec|test).ts"]
+	},
+	"keywords": [
+		"backend",
+		"it.rocks"
+	],
+	"license": "ISC",
+	"name": "@itrocks/action",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/itrocks-ts/action.git"
+	},
+	"scripts": {
+		"build": "npm run build:cjs && npm run build:esm",
+		"build:cjs": "tsc -p tsconfig.cjs.json",
+		"build:esm": "tsc -p tsconfig.esm.json && node esm/esm",
+		"test": "jest"
+	},
+	"types": "./esm/action.d.ts",
+	"version": "0.0.1"
+}
