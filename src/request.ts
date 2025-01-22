@@ -4,11 +4,11 @@ import { dataSource, Entity }       from '@itrocks/storage'
 import formats                      from './formats'
 
 type Dependencies = {
-	getModule: (route: string) => string
+	getModule: (route: string) => string | undefined
 }
 
 const depends: Dependencies = {
-	getModule: route => route
+	getModule: route => route ? route : undefined
 }
 
 export class Request<T extends object = object>
