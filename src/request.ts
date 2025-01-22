@@ -34,7 +34,7 @@ export class Request<T extends object = object>
 		const module = depends.getModule(this.route)
 		if (!module) return class {} as Type<T>
 
-		const type = require('..' + module).default
+		const type = require(module).default
 		if ((typeof type)[0] !== 'f') {
 			throw 'Module ' + this.route.substring(1) + ' default is not a class'
 		}
