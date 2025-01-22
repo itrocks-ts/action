@@ -39,6 +39,12 @@ export {
 } from './actions'
 
 export {
+	Need,
+	needOf,
+	NOTHING
+} from './need'
+
+export {
 	Request,
 	requestDependsOn
 } from './request'
