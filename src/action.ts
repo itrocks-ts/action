@@ -1,6 +1,7 @@
 import { HtmlResponse } from '@itrocks/core-responses'
 import { JsonResponse } from '@itrocks/core-responses'
 import { Headers }      from '@itrocks/request-response'
+import { Request }      from './request'
 
 export class Action
 {
