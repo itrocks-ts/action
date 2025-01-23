@@ -10,6 +10,11 @@ export class Action
 		return new HtmlResponse(body, statusCode, headers)
 	}
 
+	async htmlTemplateResponse(data: any, request: Request, templateFile: string, statusCode = 200, headers: Headers = {})
+	{
+		return this.htmlResponse(data.toString(), statusCode, headers)
+	}
+
 	jsonResponse(data: any, statusCode = 200, headers: Headers = {})
 	{
 		return new JsonResponse(data, statusCode, headers)
