@@ -10,7 +10,7 @@
 		"@itrocks/request-response": "latest",
 		"@itrocks/storage": "latest"
 	},
-	"description": "",
+	"description": "Domain-oriented requests with path decoding, business object preloading, and action linking",
 	"devDependencies": {
 		"@types/jest": "^29.5",
 		"@types/node": "^22.10",
@@ -55,5 +55,5 @@
 		"test": "jest"
 	},
 	"types": "./esm/action.d.ts",
-	"version": "0.0.8"
+	"version": "0.0.9"
 }
