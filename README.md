@@ -6,4 +6,4 @@
 
 # action
 
-Domain-oriented requests with path decoding, business object preloading, and action linking.
+An abstract class for applying actions in your framework, with @Actions and @Need decorators for assignment.

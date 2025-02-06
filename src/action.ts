@@ -1,9 +1,9 @@
-import { HtmlResponse } from '@itrocks/core-responses'
-import { JsonResponse } from '@itrocks/core-responses'
-import { Headers }      from '@itrocks/request-response'
-import { Request }      from './request'
+import { ActionRequest } from '@itrocks/action-request'
+import { HtmlResponse }  from '@itrocks/core-responses'
+import { JsonResponse }  from '@itrocks/core-responses'
+import { Headers }       from '@itrocks/request-response'
 
-export class Action
+export abstract class Action
 {
 
 	htmlResponse(body: string, statusCode = 200, headers: Headers = {})
@@ -11,8 +11,9 @@ export class Action
 		return new HtmlResponse(body, statusCode, headers)
 	}
 
-	async htmlTemplateResponse(data: any, request: Request, templateFile: string, statusCode = 200, headers: Headers = {})
-	{
+	async htmlTemplateResponse(
+		data: any, actionRequest: ActionRequest, templateFile: string, statusCode = 200, headers: Headers = {}
+	) {
 		return this.htmlResponse(data.toString(), statusCode, headers)
 	}
 
@@ -34,8 +35,3 @@ export {
 	needOf,
 	NOTHING
 } from './need'
-
-export {
-	Request,
-	requestDependsOn
-} from './request'
