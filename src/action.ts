@@ -2,9 +2,16 @@ import { Request }      from '@itrocks/action-request'
 import { HtmlResponse } from '@itrocks/core-responses'
 import { JsonResponse } from '@itrocks/core-responses'
 import { Headers }      from '@itrocks/request-response'
+import { ActionEntry }  from './repository'
+
+export * from './actions'
+export * from './need'
+export * from './repository'
 
 export abstract class Action
 {
+
+	actions: ActionEntry[] = []
 
 	htmlResponse(body: string, statusCode = 200, headers: Headers = {})
 	{
@@ -22,15 +29,3 @@ export abstract class Action
 	}
 
 }
-
-export {
-	Actions,
-	actionsOf,
-	setDefaultActions
-} from './actions'
-
-export {
-	Need,
-	needOf,
-	NOTHING
-} from './need'

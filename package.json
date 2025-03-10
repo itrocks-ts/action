@@ -45,9 +45,9 @@
 	},
 	"scripts": {
 		"build": "npm run build:cjs && npm run build:esm",
-		"build:cjs": "tsc -p tsconfig.cjs.json",
-		"build:esm": "tsc -p tsconfig.esm.json && node esm/esm"
+		"build:cjs": "tsc -p tsconfig.cjs.json && cp src/*.html cjs/",
+		"build:esm": "tsc -p tsconfig.esm.json && cp src/*.html esm/ && node esm/esm"
 	},
 	"types": "./esm/action.d.ts",
-	"version": "0.0.11"
+	"version": "0.0.12"
 }
