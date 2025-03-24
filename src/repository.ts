@@ -1,29 +1,40 @@
-import { ObjectOrType, Type, typeIdentifier, typeOf } from '@itrocks/class-type'
+import { ObjectOrType, Type }     from '@itrocks/class-type'
+import { typeIdentifier, typeOf } from '@itrocks/class-type'
+import { toDisplay, ucFirst }     from '@itrocks/rename'
 
 export interface ActionEntry {
 	[dataKey: string]: any,
 	action:   string
-	css?:      string
+	caption:  string
+	css?:     string
 	target:   string
 	template: string
 }
 
 export const actionRepository: Record<string, Record<string, Record<symbol, ActionEntry>>> = {}
 
-export interface ActionCss {
+export interface ActionAsset {
 	[filter: string]: any
-	css: string
+	file: string
 }
 
-export interface ActionTemplate {
-	[filter: string]: any
-	template: string
-}
-
-export const actionCss:       ActionCss[] = []
-export const actionTemplates: ActionTemplate[] = []
+export const actionCss:       ActionAsset[] = []
+export const actionTemplates: ActionAsset[] = []
 
 const DEFAULT = Symbol('DEFAULT')
+
+function filterFile(actionAssets: ActionAsset[], definition: Partial<ActionEntry>)
+{
+	return actionAssets
+		.filter(entry => Object.entries(definition).every(
+			([filter, value]) => entry[filter] === value
+		))
+		.find(entry => Object.entries(entry).every(
+			([filter, value]) => ['file', 'target'].includes(filter) || (definition[filter] === value)
+		))
+		?? actionAssets.find(entry => Object.keys(entry).length === 1)
+		?? { file: 'noMatch' }
+}
 
 export function getActions(source: ObjectOrType, sourceAction: string): ActionEntry[]
 {
@@ -52,38 +63,22 @@ export function setAction(
 	const target        = definition.target ?? '#'
 	const targetActions = sourceActions[targetAction] ?? (sourceActions[targetAction] = {})
 
-	const css = definition.css ?? (
-		actionCss
-			.filter(entry => Object.entries(definition).every(([filter, value]) => (entry[filter] === value)))
-			.find(entry => Object.entries(entry).every(
-				([filter, value]) => ['css', 'target'].includes(filter) || (definition[filter] === value)
-			))
-		?? actionCss.find(entry => Object.keys(entry).length === 1)
-		?? { css: 'noMatch' }
-	).css.replaceAll('(action)', targetAction)
-
-	const template = definition.template ?? (
-		actionTemplates
-		.filter(entry => Object.entries(definition).every(([filter, value]) => (entry[filter] === value)))
-		.find(entry => Object.entries(entry).every(
-			([filter, value]) => ['target', 'template'].includes(filter) || (definition[filter] === value)
-		))
-		?? actionTemplates.find(entry => Object.keys(entry).length === 1)
-		?? { template: 'noMatch' }
-	).template
+	const caption  = definition.caption ?? ucFirst(toDisplay(targetAction))
+	const css      = definition.css ?? filterFile(actionCss, definition).file.replaceAll('(action)', targetAction)
+	const template = definition.template ?? filterFile(actionTemplates, definition).file
 
 	targetActions[source ? typeIdentifier(source) : DEFAULT] = Object.assign(
-		{ action: targetAction, target, css, template },
+		{ action: targetAction, caption, target, css, template },
 		definition
 	)
 }
 
-export function setActionCss(...css: ActionCss[])
+export function setActionCss(...css: ActionAsset[])
 {
 	actionCss.push(...css)
 }
 
-export function setActionTemplates(...templates: ActionTemplate[])
+export function setActionTemplates(...templates: ActionAsset[])
 {
 	actionTemplates.push(...templates)
 }
