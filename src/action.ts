@@ -8,7 +8,7 @@ export * from './actions'
 export * from './need'
 export * from './repository'
 
-export abstract class Action
+export abstract class Action<T extends object = object>
 {
 
 	actions: ActionEntry[] = []
@@ -19,7 +19,7 @@ export abstract class Action
 	}
 
 	async htmlTemplateResponse(
-		data: any, _request: Request, _templateFile: string, statusCode = 200, headers: Headers = {}
+		data: any, _request: Request<T>, _templateFile: string, statusCode = 200, headers: Headers = {}
 	) {
 		return this.htmlResponse(data.toString(), statusCode, headers)
 	}
