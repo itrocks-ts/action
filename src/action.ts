@@ -18,8 +18,9 @@ export abstract class Action
 		return new HtmlResponse(body, statusCode, headers)
 	}
 
-	async htmlTemplateResponse(data: any, request: Request, templateFile: string, statusCode = 200, headers: Headers = {})
-	{
+	async htmlTemplateResponse(
+		data: any, _request: Request, _templateFile: string, statusCode = 200, headers: Headers = {}
+	) {
 		return this.htmlResponse(data.toString(), statusCode, headers)
 	}
 
