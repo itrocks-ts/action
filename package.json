@@ -50,5 +50,5 @@
 		"build:esm": "tsc -p tsconfig.esm.json && cp src/*.html esm/ && node esm/esm"
 	},
 	"types": "./esm/action.d.ts",
-	"version": "0.0.17"
+	"version": "0.0.18"
 }

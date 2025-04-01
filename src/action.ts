@@ -13,6 +13,16 @@ export abstract class Action<T extends object = object>
 
 	actions: ActionEntry[] = []
 
+	async getObject(request: Request<T>)
+	{
+		return await request.getObject() ?? new request.type
+	}
+
+	async getObjects(request: Request<T>)
+	{
+		return request.getObjects()
+	}
+
 	htmlResponse(body: string, statusCode = 200, headers: Headers = {})
 	{
 		return new HtmlResponse(body, statusCode, headers)
