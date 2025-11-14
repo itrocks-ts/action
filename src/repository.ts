@@ -75,6 +75,7 @@ export function setAction(
 
 export function setActionCss(...css: ActionAsset[])
 {
+	css = css.map(css => css.file.startsWith('/@') ? Object.assign(css, { file: '/node_modules' + css.file }) : css)
 	actionCss.push(...css)
 }
 
