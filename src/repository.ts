@@ -27,7 +27,7 @@ function filterFile(actionAssets: ActionAsset[], definition: Partial<ActionEntry
 {
 	return actionAssets
 		.filter(entry => Object.entries(definition).every(
-			([filter, value]) => entry[filter] === value
+			([filter, value]) => ['file', 'target'].includes(filter) || (entry[filter] === value)
 		))
 		.find(entry => Object.entries(entry).every(
 			([filter, value]) => ['file', 'target'].includes(filter) || (definition[filter] === value)
