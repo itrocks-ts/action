@@ -4,9 +4,15 @@ import { JsonResponse } from '@itrocks/core-responses'
 import { Headers }      from '@itrocks/request-response'
 import { ActionEntry }  from './repository'
 
-export * from './actions'
-export * from './need'
-export * from './repository'
+export { Actions, actionsOf, setDefaultActions } from './actions'
+export { CLEAR, CLEAR as ACTION_CLEAR }          from './actions'
+export { DEFAULT, DEFAULT as ACTION_DEFAULT }    from './actions'
+export { ActionFlow }                            from './flow'
+export { Needs, Need, needOf, NOTHING }          from './need'
+export { ActionAsset, ActionEntry }              from './repository'
+export { actionRepository }                      from './repository'
+export { getActions, setAction  }                from './repository'
+export { setActionCss, setActionTemplates }      from './repository'
 
 export abstract class Action<T extends object = object>
 {
