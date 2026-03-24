@@ -1,27 +1,32 @@
-import { ObjectOrType, Type }     from '@itrocks/class-type'
-import { typeIdentifier, typeOf } from '@itrocks/class-type'
-import { toDisplay, ucFirst }     from '@itrocks/rename'
+import { baseType }     from '@itrocks/class-type'
+import { ObjectOrType } from '@itrocks/class-type'
+import { Type }         from '@itrocks/class-type'
+import { typeOf }       from '@itrocks/class-type'
+import { toDisplay }    from '@itrocks/rename'
+import { ucFirst }      from '@itrocks/rename'
+
+const DEFAULT = Symbol('DEFAULT')
 
 export interface ActionEntry {
 	[dataKey: string]: any,
 	action:   string
 	caption:  string
 	css?:     string
+	source?:  Type
 	target:   string
 	template: string
 }
-
-export const actionRepository: Record<string, Record<string, Record<symbol, ActionEntry>>> = {}
 
 export interface ActionAsset {
 	[filter: string]: any
 	file: string
 }
 
-export const actionCss:       ActionAsset[] = []
-export const actionTemplates: ActionAsset[] = []
+export const actionCss: ActionAsset[] = []
 
-const DEFAULT = Symbol('DEFAULT')
+export const actionRepository: Record<string, Record<string, Map<Type | typeof DEFAULT, ActionEntry>>> = {}
+
+export const actionTemplates: ActionAsset[] = []
 
 function filterFile(actionAssets: ActionAsset[], definition: Partial<ActionEntry>)
 {
@@ -43,34 +48,31 @@ export function getActions(source: ObjectOrType, sourceAction: string): ActionEn
 	if (!sourceActions) {
 		return actions
 	}
-	const type = typeOf(source)
-	const targetIdentifier = typeIdentifier(type)
+	const type = baseType(typeOf(source))
 	for (const targetAction in sourceActions) {
-		const action = sourceActions[targetAction][targetIdentifier] ?? sourceActions[targetAction][DEFAULT]
-		if (action) {
-			action.object = source
-			action.type   = type
-			actions.push(action)
-		}
+		const actionMap = sourceActions[targetAction]
+		const action    = actionMap.get(type) ?? actionMap.get(DEFAULT)
+		if (!action) continue
+		action.object = source
+		action.type   = type
+		actions.push(action)
 	}
 	return actions
 }
 
-export function setAction(
-	sourceAction: string, targetAction: string, definition: Partial<ActionEntry> = {}, source?: Type
-) {
+export function setAction(sourceAction: string, targetAction: string, definition: Partial<ActionEntry> = {})
+{
+	const source        = definition.source ?? DEFAULT
 	const sourceActions = actionRepository[sourceAction] ?? (actionRepository[sourceAction] = {})
-	const target        = definition.target ?? '#'
-	const targetActions = sourceActions[targetAction] ?? (sourceActions[targetAction] = {})
+	const targetActions = sourceActions[targetAction]    ?? (sourceActions[targetAction] = new Map())
 
-	const caption  = definition.caption ?? ucFirst(toDisplay(targetAction))
-	const css      = definition.css ?? filterFile(actionCss, definition).file.replaceAll('(action)', targetAction)
-	const template = definition.template ?? filterFile(actionTemplates, definition).file
-
-	targetActions[source ? typeIdentifier(source) : DEFAULT] = Object.assign(
-		{ action: targetAction, caption, target, css, template },
-		definition
-	)
+	targetActions.set(source, Object.assign({
+		action:   targetAction,
+		caption:  definition.caption  ?? ucFirst(toDisplay(targetAction)),
+		css:      definition.css      ?? filterFile(actionCss, definition).file.replaceAll('(action)', targetAction),
+		target:   definition.target   ?? '#',
+		template: definition.template ?? filterFile(actionTemplates, definition).file
+	}, definition))
 }
 
 export function setActionCss(...css: ActionAsset[])
