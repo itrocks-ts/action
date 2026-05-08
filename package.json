@@ -12,22 +12,16 @@
 	},
 	"description": "An abstract class for applying actions in your framework, with @Actions and @Need decorators for assignment",
 	"devDependencies": {
-		"@types/node": "^24.10",
-		"typescript": "~5.9"
+		"typescript": "^6.0"
 	},
 	"engines": {
-		"node": ">=18"
+		"node": ">=24"
 	},
-	"exports": {
-		"import": "./esm/action.js",
-		"require": "./cjs/action.js"
-	},
+	"exports": "./cjs/action.js",
 	"files": [
 		"LICENSE",
 		"README.md",
-		"cjs/*",
-		"esm/*",
-		"!esm.*",
+		"cjs",
 		"!*.map"
 	],
 	"homepage": "https://it.rocks",
@@ -46,10 +40,7 @@
 		"url": "git+https://github.com/itrocks-ts/action.git"
 	},
 	"scripts": {
-		"build": "npm run build:cjs && npm run build:esm",
-		"build:cjs": "tsc -p tsconfig.cjs.json && cp src/*.html cjs/",
-		"build:esm": "tsc -p tsconfig.esm.json && cp src/*.html esm/ && node esm/esm"
+		"build": "tsc && cp src/*.html cjs/"
 	},
-	"types": "./esm/action.d.ts",
-	"version": "0.2.1"
+	"version": "0.2.2"
 }
