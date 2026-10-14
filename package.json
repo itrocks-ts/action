@@ -8,6 +8,7 @@
 		"@itrocks/class-type": "latest",
 		"@itrocks/core-responses": "latest",
 		"@itrocks/decorator": "latest",
+		"@itrocks/rename": "latest",
 		"@itrocks/request-response": "latest"
 	},
 	"description": "An abstract class for applying actions in your framework, with @Actions and @Need decorators for assignment",
@@ -42,5 +43,5 @@
 	"scripts": {
 		"build": "tsc && node -e \"const fs=require('node:fs'),path=require('node:path');for(const file of fs.readdirSync('src'))if(file.endsWith('.html'))fs.copyFileSync(path.join('src',file),path.join('cjs',file))\""
 	},
-	"version": "0.3.0"
+	"version": "0.3.1"
 }
